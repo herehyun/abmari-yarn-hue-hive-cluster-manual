@@ -1,4 +1,4 @@
-<img width="869" alt="스크린샷 2023-07-13 오후 4 30 18" src="https://github.com/herehyun/manuals/assets/82385436/335f1fb5-2d16-4675-9bf0-b97a7b889397"># 목차
+# 목차
 
 [1. Ambari](#1-ambari)
 > [1.0. Ambari란](#10-ambari란)
@@ -76,7 +76,6 @@
 
 > [8.5 GitLab](#85-gitlab)
 
-> [8.6 ftp계정추가](#86-ftp계정-추가)
 
 
 ----
@@ -632,11 +631,163 @@ df = spark.read.format("jdbc")\
 ----
 ## 8.1 클러스터 접속 권한 부여
 
+* 계정 추가 및 확인
+
+1. 사용자 정보 수집
+이름 : 여기현
+ID  : 12345
+이메일 : yeo0109@naver.com
+
+2. 권한 확인 [권한 확인]
+
+mbsadmin:x:1000:1000:mbsadmin:/home/mbsadmin:/bin/bash
+
+3. 접속 대상 확인
+:: 보안정책에 따라 실제 사용하는 계정말고는 전 노드에 접속이 안됨.
+
+4. 계정 추가(:: 대상: 전 노드)
+
+    **4-1.** 관리자(root) 권한 얻기
+
+    su
+
+    **4-2.** 계정 추가: useradd 명령어를 사용하여 새로운 사용자 계정을 추가
+
+    useradd yeo0109
+
+    **4-3.** 패스워드 설정: passwd 명령어를 사용하여 새로운 사용자 계정의 패스워드를 설정
+
+    password : P@ssw0rd
+    passwd yeo0109
+
+    **4-4.** (선택 사항) 사용자 정보 추가: usermod 명령어를 사용하여 사용자의 기본 정보를 추가하거나 변경
+
+    ex) uesrmod -c "사용자의 성명, 전화번호, 주소" newuser
+
+usermod -c "여기현, yeo0109@naver.com" yeo0109
+
+5. 확인
+
+vi /etc/passwd
+
+yeo0109:x:10043:10043:여기현, yeo0109@naver.com:/home/yeo0109:/bin/bash
+
+::mbsadmin과 같은 권한으로 올려주고싶을 시
+
+  * [수정] yeo0109:x:10043:1000:여기현, yeo0109@naver.com:/home/yeo0109:/bin/bash
+
+6. 접속테스트
+
+yeo0109 로 접속.
+
+## 8.2 Thrift Server 확인
+
+* Thrift Server가 spark history 상으로는 살아있는거처럼 보이나 실제로는 실행이 안되고 있는 상황 발생
+
+<img width="863" alt="스크린샷 2023-07-13 오후 7 17 53" src="https://github.com/herehyun/manuals/assets/82385436/69455d18-5fc4-46e7-8aae-8d8a5b467bf5">
+
+* [mbsadmin@mn01p ~]$ ps aux | grep 'hiveserver2' | grep -v 'grep' 으로 조회되는 프로세스가 없음
+
+[root@mn01p _CMD]# ./thriftCheckAndRestart.sh 을 이용해서 shell 실행
+
+&rarr; 현재는 root안에있는 crontab에 1분 간격으로 thrift서버가 죽었는지 모니터링하고 죽었을경우 shell을 실행 시키게 되어있음.
+
+### 8.3 GPU 사용량 확인 하기
+
+1.G/W node 에서 아래 명령어 실행
+
+  -  현재시점 GPU 사용량 확인
+  'nvidia-smi'
+
+  - 1초마다 GPU 사용량 업데이트, 모니터링용
+  'watch -d -n 1 nvidia-smi'
+
+* 출력 ex)
+<img width="823" alt="스크린샷 2023-07-13 오후 7 21 22" src="https://github.com/herehyun/manuals/assets/82385436/0ef6eae8-0e6f-48a7-85d0-2fa19a08888d">
+
+2. G/W 노드에 2개 GPU가 존재 : 0번, 1번
+
+위 상태에서는 1번 GPU가 사용 중 (Memory-Usage 0 & GPU-Util의 퍼센테이지 올라가고 있음)
+
+만약 Memory-Usage은 있지만 GPU-Util의 퍼센테이지가 0%이면, 모델 훈련이나 예측은 실행되는 중이 아님.
+
+Memory-Usage에 남는 용량이 없다면 GPU사용 불가
+
+3. 누가 GPU 사용 중인지 확인
+
+아래 Processes 표에서 PID 복사 후 아래 명령어 사용 {pid}에 복사한 텍스트 붙여넣기
+
+'ps -f {pid}'
+
+4. 사용중인 GPU KILL
+강제종료 : kill -9 {pid}
 
 
+### 8.4 MariaDB 사용법
+### Airflow with MariaDB 접속 정보
 
+<div align="center">
+DBeaver접속
+</div>
+<div align="center">
+&darr;
+</div>
+<div align="center">
+<img width="861" alt="스크린샷 2023-07-13 오후 7 28 00" src="https://github.com/herehyun/manuals/assets/82385436/d091907b-6ec9-4a0b-b0da-a89afd677a57">
+</div>
+<div align="center">
+&darr;
+</div>
+<div align="center">
+MariaDB 클릭
+</div>
+<div align="center">
+&darr;
+</div>
+<div align="center">
+<img width="859" alt="스크린샷 2023-07-13 오후 7 28 12" src="https://github.com/herehyun/manuals/assets/82385436/e474a7cd-794a-4208-8724-1679a8308aa2">
+</div>
+<div align="center">
+&darr;
+</div>
+```
+      Server Host : ip주소
+      port        : port주소
+      database    : ngios_test
+      username    : ngios_test
+      password    : ngios_password
 
+```
+<div align="center">
+&darr;
+</div>
+<div align="center">
+<img width="860" alt="스크린샷 2023-07-13 오후 7 32 42" src="https://github.com/herehyun/manuals/assets/82385436/0bbf1f3f-d48e-4258-a942-dcd5cc59f2b8">
+</div>
+<div align="center">
+&darr;
+</div>
+<div align="center">
 
+</div>
+<div align="center">
+&darr;
+</div>
+
+### 8.5 GitLab
+### GitLab 초대
+
+  -  Master계정으로 접속
+
+  - 추가할 프로젝트 클릭 > 프로젝트 홈으로 이동
+
+  - Invite member 탭 > GitLab member or Email address
+
+  <img width="563" alt="스크린샷 2023-07-13 오후 7 43 54" src="https://github.com/herehyun/manuals/assets/82385436/1fa0b1a8-193a-4dfa-886e-eabc43f346f0">
+
+  - GUEST로 권한을 부여할 경우 데이터소스가 보이지 않을 수 있으므로 DEVELOP으로 올린다.
+
+  - 초대할 멤버가 GitLab 회원가입되어 있으면 GitLab 계정 입력, 가입되어 있지 않으면 메일 주소로 invite 메일 발송됨
 
 
 
