@@ -46,7 +46,7 @@
 
 >> [6.4.2. OVERWRITE](#642-overwrite)
 
->> [6.4.3. HUE에 있는 데이터 업데이트](#643-hue에-있는-데이터-업데이트
+>> [6.4.3. HUE에 있는 데이터 업데이트](#643-hue에-있는-데이터-업데이트)
 
 > [6.5. DELTA HISTORY로 과거 테이블로 복원하는 방법](#65-delta-history로-과거-테이블로-복원하는-방법)
 
@@ -108,7 +108,7 @@ password : admin
 </div>
 <div>&darr;</div>
 <div align="center">
-<img width="847" alt="스크린샷 2023-07-13 오후 12 53 02" src="https://github.com/herehyun/manuals/assets/82385436/0e3d6a57-646e-4a11-a8d4-8059855e8d2e">
+![여기현캡쳐1](https://github.com/herehyun/manuals/assets/82385436/8a66e289-5278-40af-a798-a05d39660947)
 </div>
 <div>&darr;</div>
 <div align="center">
