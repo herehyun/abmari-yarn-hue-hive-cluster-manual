@@ -108,7 +108,7 @@ password : admin
 </div>
 <div>&darr;</div>
 <div align="center">
-![여기현캡쳐1](https://github.com/herehyun/manuals/assets/82385436/8a66e289-5278-40af-a798-a05d39660947)
+<img width="847" alt="스크린샷 2023-07-13 오후 12 52 34" src="https://github.com/herehyun/manuals/assets/82385436/8a66e289-5278-40af-a798-a05d39660947">
 </div>
 <div>&darr;</div>
 <div align="center">
@@ -176,7 +176,8 @@ password : admin
   + 각 노드별 사용량 확인은 Hosts - Disk Usage 에 직접 들어가서 확인
 
 <div align="center">
-<img width="847" alt="스크린샷 2023-07-13 오후 12 52 04" src="https://github.com/herehyun/manuals/assets/82385436/00fc26ab-17f0-4054-9340-30a40a9bc6ad">
+<img width="847" alt="스크린샷 2023-07-13 오후 12 52 34" src="https://github.com/herehyun/manuals/assets/82385436/5fcc583d-bd25-4941-881e-97cb9c2f60d4">
+
 </div>
 
 * CPU Usage : 노드별 CPU사용량 sum
